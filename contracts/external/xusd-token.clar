@@ -101,7 +101,7 @@
   )
 )
 
-(define-public (burn (amount uint) (burner principal))
+(define-public (burn (burner principal) (amount uint))
   (begin
     (asserts! (is-eq tx-sender CONTRACT-OWNER) ERR-UNAUTHORIZED-MINT)
     (ft-burn? xusd amount burner)

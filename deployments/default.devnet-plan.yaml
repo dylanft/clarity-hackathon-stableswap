@@ -1,0 +1,35 @@
+---
+id: 0
+name: Devnet deployment
+network: devnet
+stacks-node: "http://localhost:20443"
+bitcoin-node: "http://devnet:devnet@localhost:18443"
+plan:
+  batches:
+    - id: 0
+      transactions:
+        - contract-publish:
+            contract-name: trait-stableswap
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 14810
+            path: contracts/trait-stableswap.clar
+        - contract-publish:
+            contract-name: sip-010-trait-ft-standard
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 8700
+            path: contracts/external/sip-010-trait-ft-standard.clar
+        - contract-publish:
+            contract-name: stableswap
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 186280
+            path: contracts/stableswap.clar
+        - contract-publish:
+            contract-name: usda-token
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 43280
+            path: contracts/external/usda-token.clar
+        - contract-publish:
+            contract-name: xusd-token
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 43720
+            path: contracts/external/xusd-token.clar
