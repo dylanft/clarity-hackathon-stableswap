@@ -58,17 +58,6 @@
   }
 )
 
-(define-map LP-contributions
-    {
-        token-x: principal,
-        token-y: principal,
-        LP: principal
-    }
-    {
-        x-amount: uint,
-        y-amount: uint,
-    }
-)
 
 ;; TODO(psq): replace use of balance-x/balance-y with a call to balance-of(swapr) on the token itself, no write to do actually!!!  The transfer is the write, that's cool :)
 ;; I don't think so anymore?
@@ -84,6 +73,20 @@
   {
     amount: uint,
   }
+)
+
+;; track how much a user has contributed to a pool
+(define-map LP-contributions
+    {
+        token-x: principal,
+        token-y: principal,
+        LP: principal,
+    }
+    {
+        x-amount: uint,
+        y-amount: uint,
+
+    }
 )
 
 
@@ -184,12 +187,19 @@
         balance-x: (+ balance-x x),
         balance-y: (+ balance-y new-y)
       }))
+      (new-amounts 
+        {
+            x-amount: x,
+            y-amount: new-y
+        }
+      )
     )
       ;; TODO(psq) check if x or y is 0, to calculate proper exchange rate unless shares-total is 0, which would be an error
     (asserts! (is-ok (contract-call? token-x-trait transfer x tx-sender contract-address none)) transfer-x-failed-err)
     (asserts! (is-ok (contract-call? token-y-trait transfer new-y tx-sender contract-address none)) transfer-y-failed-err)
 
     (map-set pairs-data-map { token-x: token-x, token-y: token-y } pair-updated)
+    ;; (map-set LP-contributions { token-x: token-x, token-y: token-y, tx-sender } new-amounts)
     ;; (try! (contract-call? token-swapr-trait mint recipient-address new-shares))
 
 
@@ -281,6 +291,7 @@
       (balance-y (get balance-y pair))
     ;;   (shares (unwrap-panic (contract-call? token-x get-balance-of tx-sender)))
       (shares (get shares-total pair))
+    ;;   (shares (* u2 (unwrap-panic (contract-call? token-x-trait get-balance tx-sender))))
       (shares-total (get shares-total pair))
       (contract-address (as-contract tx-sender))
       (sender tx-sender)
@@ -351,7 +362,7 @@
       )
     )
 
-    (asserts! (< min-dy dy) too-much-slippage-err)
+    ;; (asserts! (< min-dy dy) too-much-slippage-err)
 
     ;; TODO(psq): check that the amount transfered in matches the amount requested
     (asserts! (is-ok (contract-call? token-x-trait transfer dx sender contract-address none)) transfer-x-failed-err)
@@ -388,7 +399,7 @@
             (get fee-balance-y pair))
         })))
 
-    (asserts! (< min-dx dx) too-much-slippage-err)
+    ;; (asserts! (< min-dx dx) too-much-slippage-err)
 
     ;; TODO(psq): check that the amount transfered in matches the amount requested
     (asserts! (is-ok (as-contract (contract-call? token-x-trait transfer dx contract-address sender none))) transfer-x-failed-err)

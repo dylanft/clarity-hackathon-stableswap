@@ -15,7 +15,11 @@ depends_on = []
 
 [contracts.stableswap]
 path = "contracts/stableswap.clar"
-depends_on = ["sip-010-trait-ft-standard", "trait-stableswap"]
+depends_on = []
+
+[contracts.stableswap-v2]
+path = "contracts/stableswap-v2.clar"
+depends_on = []
 
 [contracts.trait-stableswap]
 path = "contracts/trait-stableswap.clar"
