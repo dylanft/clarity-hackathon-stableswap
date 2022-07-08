@@ -3,7 +3,9 @@
 Steps:
  - follow Hiro guidelines to setup dev environment: https://github.com/hirosystems/clarinet
  - clone repo and cd into the clarity-hackathon-stableswap directory
- - run clarinet console to test functions. examples below:
+ - run clarinet console to test functions. 
+ 
+ - public function examples:
     - create-pair:
         (contract-call? .stableswap-v2 create-pair .usda-token .xusd-token "usda-xusd" u500000 u500000)
         
@@ -15,3 +17,12 @@ Steps:
         
     - create-pair:
         (contract-call? .stableswap-v2 swap-x-for-y .usda-token .xusd-token u25000 u25000)       
+
+
+ - read-only function examples:
+    - create-pair:
+        (contract-call? .stableswap-v2 get-name .usda-token .xusd-token)
+        
+    - add-to-position:
+        (contract-call? .stableswap-v2 get-balances .usda-token .xusd-token)    
+        
